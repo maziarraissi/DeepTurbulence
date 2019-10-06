@@ -1,0 +1,73 @@
+clear
+close all
+
+set(0,'defaulttextinterpreter','latex')
+
+t = linspace(0.1,1,100);
+x = linspace(-0.95,0.95,200);
+
+[T,X] = meshgrid(t,x);
+
+P = (1/2).*exp(1).^((2+(-1).*exp(1).^(2.*T)).*erfinv(X).^2).*((-1) ...
+    +exp(1).^(2.*T)).^(1/2);
+
+D = (-1).*exp(1).^((-1).*erfinv(X).^2).*pi.^(-1/2).*erfinv(X) ...
+    .*(2+coth(T)+tanh(T)).^(1/2).*((-1).*((-2).*cosh(4.*T)+(-2).*sinh( ...
+    4.*T)+((-1)+exp(1).^(2.*T)).^(1/2).*(1+exp(1).^(2.*T)).^(1/2).*(2+ ...
+    coth(T)+tanh(T)).^(1/2)).^(-1).*(2.*cosh(4.*T)+2.*sinh(4.*T)+((-1) ...
+    +exp(1).^(2.*T)).^(1/2).*(1+exp(1).^(2.*T)).^(1/2).*(2+coth(T)+ ...
+    tanh(T)).^(1/2))).^(1/2);
+
+E = 2.*exp(1).^((-2).*erfinv(X).^2).*((-1)+exp(1).^(2.*T)).^(-1/2) ...
+    .*(1+exp(1).^(2.*T)).^(-1/2).*pi.^(-1).*((-1).*((-2).*exp(1).^(4.* ...
+    T)+((-1)+exp(1).^(2.*T)).^(1/2).*(1+exp(1).^(2.*T)).^(1/2).*(2+ ...
+    coth(T)+tanh(T)).^(1/2)).^(-1).*(2.*exp(1).^(4.*T)+((-1)+exp(1).^( ...
+    2.*T)).^(1/2).*(1+exp(1).^(2.*T)).^(1/2).*(2+coth(T)+tanh(T)).^( ...
+    1/2))).^(1/2);
+
+fig = figure();
+set(fig,'units','normalized','outerposition',[0 0 1 0.20])
+
+subplot(1,3,1)
+pcolor(T,X,P)
+xlabel('$t$');
+ylabel('$\phi$');
+title('$P_1(t,\phi)$');
+
+axis tight
+axis square
+colormap jet
+shading interp
+colorbar
+set(gca,'FontSize',14);
+set(gcf, 'Color', 'w');
+
+subplot(1,3,2)
+pcolor(T,X,D)
+xlabel('$t$');
+ylabel('$\phi$');
+title('$D(t,\phi)$');
+
+axis tight
+axis square
+colormap jet
+shading interp
+colorbar
+set(gca,'FontSize',14);
+set(gcf, 'Color', 'w');
+
+subplot(1,3,3)
+pcolor(T,X,E)
+xlabel('$t$');
+ylabel('$\phi$');
+title('$E(t,\phi)$');
+
+axis tight
+axis square
+colormap jet
+shading interp
+colorbar
+set(gca,'FontSize',14);
+set(gcf, 'Color', 'w');
+
+save turbulence.mat T X P D E
